@@ -81,5 +81,20 @@ To better understand the specific security flaw exploited, can you identify the 
 
 => Ans: CVE-2023-46604
 
+Sau đây là một số bài viết mình tìm hiểu liên quan tới CVE này
+
+https://www.trendmicro.com/en_us/research/23/k/cve-2023-46604-exploited-by-kinsing.html 
+
+https://www.openlogic.com/blog/activemq-cve-2023-46604
+
+https://fidelissecurity.com/threatgeek/threat-intelligence/unveiling-apache-activemq-vulnerability/
+
+Bản chất về cách hoạt động của CVE này đó là các lệnh OpenWire không thể validate được các Throwable class type, dẫn tới nguy cơ RCE.
+Trong bài lab này, đoạn mã XML đã sử dụng class ProcessBuilder để tạo và khởi chạy mã độc.
+![image](https://github.com/user-attachments/assets/9d7c09f4-1d58-4434-a486-8873efe69ccc)
+
+Trong đoạn code trên, method validateIsThrowable được sử dụng để đảm bảo rằng chỉ các class kế thừa từ Throwable mới được chấp nhận và xử lý. Nếu không có method này hoặc method không hoạt động đúng cách, bất kỳ class nào cũng có thể được chấp nhận và thực thi, bao gồm cả các class chứa mã độc. 
+
+ 
 <h1>Q8:</h1>
 
