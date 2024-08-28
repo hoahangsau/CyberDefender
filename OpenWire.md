@@ -90,7 +90,6 @@ https://www.openlogic.com/blog/activemq-cve-2023-46604
 
 https://fidelissecurity.com/threatgeek/threat-intelligence/unveiling-apache-activemq-vulnerability/
 
-https://www.vicarius.io/vsociety/posts/apache-activemq-rce-cve-2023-46604?source=post_page-----65aa41a651b1--------------------------------
 
 Bản chất về cách hoạt động của CVE này đó là các lệnh OpenWire không thể validate được các Throwable class type, dẫn tới nguy cơ RCE.
 Trong bài lab này, đoạn mã XML đã sử dụng class ProcessBuilder để tạo và khởi chạy mã độc.
