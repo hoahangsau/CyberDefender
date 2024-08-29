@@ -92,10 +92,10 @@ https://fidelissecurity.com/threatgeek/threat-intelligence/unveiling-apache-acti
 
 
 Bản chất về cách hoạt động của CVE này đó là các lệnh OpenWire không thể validate được các Throwable class type, dẫn tới nguy cơ RCE.
-Trong bài lab này, đoạn mã XML đã sử dụng class ProcessBuilder để tạo và khởi chạy mã độc.
+Trong bài lab này, đoạn mã XML đã sử dụng class ProcessBuilder, để tạo và khởi chạy mã độc.
 ![image](https://github.com/user-attachments/assets/9d7c09f4-1d58-4434-a486-8873efe69ccc)
 
-Trong đoạn code trên, method validateIsThrowable đã được update vào bản patch OpenWire và được sử dụng để đảm bảo rằng chỉ các class kế thừa từ Throwable mới được chấp nhận và xử lý. Nếu không có method này hoặc method không hoạt động đúng cách, bất kỳ class nào cũng có thể được chấp nhận và thực thi, bao gồm cả các class chứa mã độc. 
+Trong đoạn code trên, method validateIsThrowable đã được update vào bản patch OpenWire và được sử dụng để đảm bảo rằng chỉ các class kế thừa từ Throwable mới được chấp nhận và xử lý. Nếu không có method này hoặc method không hoạt động đúng cách, bất kỳ class nào cũng có thể được chấp nhận và thực thi, bao gồm cả các class chứa mã độc.  Mục đích của việc này là để xác minh rằng tên lớp được cung cấp (thông qua className) thực sự tham chiếu đến một lớp là con của Throwable trước khi tạo một đối tượng từ lớp này.
 
  
 <h1>Q8:</h1>
@@ -108,3 +108,68 @@ https://www.vicarius.io/vsociety/posts/apache-activemq-rce-cve-2023-46604?source
 Mình research được thêm bài viết này và có câu trả lời 
 => Ans: BaseDataStreamMarshaller.createThrowable
 
+Dựa vào link bài viết trên, mình biết được cách hoạt động của hàm createThrowable
+<pre>
+ private Throwable createThrowable(String className, String message) {
+    try {
+        Class clazz = Class.forName(className, false, BaseDataStreamMarshaller.class.getClassLoader());
+        OpenWireUtil.validateIsThrowable(clazz);  // DÒNG MỚI ĐƯỢC THÊM SAU BẢN VÁ
+        Constructor constructor = clazz.getConstructor(new Class[] {String.class});
+        return (Throwable)constructor.newInstance(new Object[] {message});
+    } catch (IllegalArgumentException e) {       // DÒNG MỚI ĐƯỢC THÊM SAU BẢN VÁ
+        return e;                                // DÒNG MỚI ĐƯỢC THÊM SAU BẢN VÁ
+    } catch (Throwable e) {
+        return new Throwable(className + ": " + message);
+    }
+}
+
+</pre>
+
+Ở bản vá mới thì khối catch đã được thêm vào để xử lý ngoại lệ cho các class truyền vào, lý do vì sao phải xử lý ngoại lệ thì mình đã giải thích ở Q7
+
+Để hiểu vì sao hàm createThrowable trên có thể gây ra lỗ hổng, chúng ta có thể nhìn vào và phân tích hàm **BaseDataStreamMarshaller.looseUnmarsalThrowable**
+
+<pre>
+ protected Throwable looseUnmarsalThrowable(OpenWireFormat wireFormat, DataInput dataIn)
+        throws IOException {
+        if (dataIn.readBoolean()) {
+            String clazz = looseUnmarshalString(dataIn);
+            String message = looseUnmarshalString(dataIn);
+            Throwable o = createThrowable(clazz, message);
+            if (wireFormat.isStackTraceEnabled()) {
+                if (STACK_TRACE_ELEMENT_CONSTRUCTOR != null) {
+                    StackTraceElement ss[] = new StackTraceElement[dataIn.readShort()];
+                    for (int i = 0; i < ss.length; i++) {
+                        try {
+                            ss[i] = (StackTraceElement)STACK_TRACE_ELEMENT_CONSTRUCTOR
+                                .newInstance(new Object[] {looseUnmarshalString(dataIn),
+                                                           looseUnmarshalString(dataIn),
+                                                           looseUnmarshalString(dataIn),
+                                                           dataIn.readInt()});
+                        } catch (IOException e) {
+                            throw e;
+                        } catch (Throwable e) {
+                        }
+                    }
+                    o.setStackTrace(ss);
+                } else {
+                    short size = dataIn.readShort();
+                    for (int i = 0; i < size; i++) {
+                        looseUnmarshalString(dataIn);
+                        looseUnmarshalString(dataIn);
+                        looseUnmarshalString(dataIn);
+                        dataIn.readInt();
+                    }
+                }
+                o.initCause(looseUnmarsalThrowable(wireFormat, dataIn));
+
+            }
+            return o;
+        } else {
+            return null;
+        }
+    }
+
+</pre>
+
+Hàm này sẽ unmarshal 2 chuỗi giá trị vào biến **clazz** và **message**, sau đó 2 biến này được chuyền vào hàm createThrowable. Nếu attacker có thể kiểm soát các giá trị chuỗi **clazz** và **message** này, hàm **createThrowable** có thể tạo một đối tượng thuộc lớp bất kỳ với tham số truyền vào do attacker kiểm soát. Nếu class đó có hàm nhận vào một chuỗi là mã độc, thì việc createThrowable có thể dẫn đến RCE.
