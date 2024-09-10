@@ -1,4 +1,4 @@
-Sau khi mở file bằng FTK Imager, mình bước vào tìm hiểu và phân tích 
+Sau khi mở file bằng FTK Imager, mình bước vào tìm hiểu và phân tích các tệp và thư mục metadata của NTFS
 
 ![image](https://github.com/user-attachments/assets/5895b77d-c9ab-4285-9515-dd7fcd2b93b6)
 
@@ -20,7 +20,14 @@ Trong thư mục root có các metadata files như trong hình:
 
 **$TxfLog\$Tops** : $TxfLog là thư mục lưu trữ các log liên quan đến các giao dịch của TxF trong NTFS. $Tops là một tệp con của $TxfLog và được sử dụng để lưu trữ dữ liệu đã bị ghi đè bên trong một giao dịch đang hoạt động. Khi một tệp được cập nhật trong một giao dịch, các phiên bản cũ của các trang dữ liệu được ghi vào $Tops.
 
-`$RECYCLE.BIN`
+**$Secure**
+
+![image](https://github.com/user-attachments/assets/6a18892a-91f7-470f-8291-e630bdbe1305)
+
+
+**$UpCase**
+
+![image](https://github.com/user-attachments/assets/4ca55cbc-7868-4227-9f3a-3f5e2c55d8ed)
 
 <h1>Q1</h1>
 <h2>Problem</h2>
