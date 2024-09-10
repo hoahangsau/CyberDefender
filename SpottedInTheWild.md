@@ -33,16 +33,30 @@ Trong thư mục root có các metadata files như trong hình:
 <h2>Problem</h2>
 In your investigation into the FinTrust Bank breach, you found an application that was the entry point for the attack. Which application was used to download the malicious file?
 <h2>Solution</h2></h2>
+Đề bài hỏi suspicious file được download từ app nào nên mình tìm trong folder Download 
 
+![image](https://github.com/user-attachments/assets/31532346-b116-4fac-ab5a-31600de75bfb)
+
+=> Ans: Telegram
 <h1>Q2</h1>
 <h2>Problem</h2>
 Finding out when the attack started is critical. What is the UTC timestamp for when the suspicious file was first downloaded?
 <h2>Solution</h2></h2>
+Trong mục Telegram Desktop mình thấy một file tên "SANS SEC401.rar", để biết được file được download vào lúc nào mình view properties của file
+
+![image](https://github.com/user-attachments/assets/96f95063-6c7b-4607-a216-9693698644b7)
+
+=> Ans: 2024-02-03 07:33:20
 
 <h1>Q3</h1>
 <h2>Problem</h2>
 Knowing which vulnerability was exploited is key to improving security. What is the CVE identifier of the vulnerability used in this attack?
 <h2>Solution</h2></h2>
+
+Mình đã đưa file lên virustotal.com để scan và biết được câu trả lời
+![image](https://github.com/user-attachments/assets/4b4e3c4a-7e22-4d70-8832-4ed12c8ff1b2)
+
+=> Ans: CVE-2023-38831
 
 <h1>Q4</h1>
 <h2>Problem</h2>
