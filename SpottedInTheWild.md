@@ -22,7 +22,8 @@ Trong thư mục root có các metadata files như trong hình:
 
 **$Secure**
 
-![image](https://github.com/user-attachments/assets/6a18892a-91f7-470f-8291-e630bdbe1305)
+![Screenshot 2024-09-10 135609](https://github.com/user-attachments/assets/e5f991d6-b624-42ba-9f7e-3d4393429c97)
+
 
 
 **$UpCase**
