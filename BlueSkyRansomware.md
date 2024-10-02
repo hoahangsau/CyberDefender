@@ -10,12 +10,14 @@ Sau khi vào EventViewer và theo dõi các event, mình thấy được tên us
 ![image](https://github.com/user-attachments/assets/81e68dda-695b-4a2d-8e77-1780997eddca)
  
 => Username: sa
+
 Q3:
 Sau khi research một chút thì mình biết được là MSSQL Sever sử dụng protocol TDS để giao tiếp, và MSSQL cũng sử dụng TDS7 (một phần của protocol TDS) để thực hiện quá trình đăng nhập của người dùng. 
 	Nên mình đã filter protocol trên wireshark và tìm được thông tin username, password.
  ![image](https://github.com/user-attachments/assets/bb3014f5-11a8-41a6-bd7a-7f1a1bad2300)
 
 => Password: cyb3rd3f3nd3r$
+
 Q4:
 Ban đầu thì mình biết được đáp án nhờ việc research cụm từ “ MSSQL Leteral Movement” trên google
  ![image](https://github.com/user-attachments/assets/5a6ae397-9b1e-40d6-8565-3ca7bfba7337)
@@ -34,6 +36,7 @@ Và đúng là sau khi check lại trong file event viewer, thì mình thấy at
 
 
 =>	Flag: winlogon.exe
+
 Q6:
 Khi mà download một file từ internet, giao thức được sử dụng phổ biến nhất là http. Nên mình đã export các HTTP object lits và thu được các file sau
 
@@ -42,6 +45,7 @@ Khi mà download một file từ internet, giao thức được sử dụng ph�
 
 Ở packet đầu tiên mình thấy file đầu tiên được tải là checking.ps1 
 =>	Flag: http://87.96.21.84/checking.ps1
+
 Q7:
 Sau khi export và mở file checking.ps1 mình thấy được ở dòng code đầu có kiểm tra nhóm người dùng được gán vào biến $priv
  ![image](https://github.com/user-attachments/assets/38562e68-33ef-4b73-a612-671ccf8522d6)
@@ -53,11 +57,13 @@ Q8:
  ![image](https://github.com/user-attachments/assets/3c3453a2-83c0-4b15-909d-6fd724e7aa64)
 
 =>	Flag: DisableAntiSpyware,DisableRoutinelyTakingAction,DisableRealtimeMonitoring,SubmitSamplesConsent,SpynetReporting
+
 Q9:
 	Cũng dựa vào HTTP object list, mình biết được file được download tiếp theo là file del.ps1
 	 ![image](https://github.com/user-attachments/assets/cc4a7741-2f4c-4d77-9432-7be051c2b0aa)
 
 =>Flag: http://87.96.21.84/del.ps1
+
 Q10:
 	Trong file checking.ps1,  trong function CleanerEtc, có một dòng code được sử dụng để tạo một scheduled task
 “C:\Windows\System32\schtasks.exe /f /tn "\Microsoft\Windows\MUI\LPupdate" /tr "C:\Windows\System32\cmd.exe /c powershell -ExecutionPolicy Bypass -File C:\ProgramData\del.ps1" /ru SYSTEM /sc HOURLY /mo 4 /create | Out-Null”
@@ -67,6 +73,7 @@ Q10:
  ![image](https://github.com/user-attachments/assets/61f83a98-3a8d-47af-90b9-376bd837f65a)
 
 =>	Flag: \Microsoft\Windows\MUI\LPupdate
+
 Q11:
 	Sai khi export và đọc file del.ps1, mình biết được là mã độc này hoạt động bằng cách cho vô hiệu hóa các tiến trình quan trọng.
  ![image](https://github.com/user-attachments/assets/9eecbe93-5544-475d-b75d-69103daefb1b)
@@ -87,11 +94,13 @@ Q13:
  ![image](https://github.com/user-attachments/assets/932c6c75-beb6-466e-97c5-eee8692ee5bd)
 
 =>	Flag: hashes.txt
+
 Q14:
 	Trong HTTP Object lists có một file extracted_hosts.txt chứa danh sách các IP bị tấn công
  ![image](https://github.com/user-attachments/assets/3597bbb3-3913-4e7d-aad1-37b626f5425a)
 
 =>	Flag: extracted_hosts.txt
+
 Q15:
 	Sau khi phân tích malware bằng virustotal.com, mình tìm kiếm trong mục behavior và tìm được file ransom
  ![image](https://github.com/user-attachments/assets/95aadd74-9666-492e-9354-a646f1b0018e)
