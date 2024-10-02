@@ -1,9 +1,12 @@
-FRS301-IA1801-Phan Thuận Hóa
+**FRS301-IA1801-Phan Thuận Hóa**
+
+
 Q1:
 	Sau khi tải file lab về mình có ngó qua file DiskDrigger.ad1.txt, sau khi lướt xuống dưới thì mình thấy MD5 checksum
   ![image](https://github.com/user-attachments/assets/8a699523-9a52-4010-9a22-192856c71b43)
  
 =>	Flag: 9471e69c95d8909ae60ddff30d50ffa1
+
 
 Q2:
 	Sau khi mở file DiskDrigger.ad1 bằng FTK Imager, vì đề bài bảo là tìm ra “suspect search for on 2021-04-29 18:17:38 UTC” nên mình đã cố tìm các file chứa History của trình duyệt search
