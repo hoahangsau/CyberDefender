@@ -59,10 +59,21 @@ Mình đã đưa file lên virustotal.com để scan và biết được câu tr
 
 => Ans: CVE-2023-38831
 
+Mình có tìm hiểu thêm về CVE này qua nhiều nguồn, nhưng nguồn này là nguồn mình thấy đầy đủ và giải thích chi tiết nhất: https://mailamanh.github.io/MalwareAnalyst/assets/pages/CVE-2023-38831.html#:~:text=Theo%20WuBlockchain,%20nh%C3%B3m%20hacker%20Tri%E1%BB%81u%20Ti%C3%AAn%20kh%C3%A9t%20ti%E1%BA%BFng%20Konni,%20%C4%91%C3%A3
+
+Mình sẽ giải thích cách chi tiết cách hoạt động của CVE này ở Q4
+
 <h1>Q4</h1>
 <h2>Problem</h2>
 In examining the downloaded archive, you noticed a file in with an odd extension indicating it might be malicious. What is the name of this file?
 <h2>Solution</h2></h2>
+
+![image](https://github.com/user-attachments/assets/597a99db-56ce-45c0-bfb0-5ade35c4d05b)
+
+Sau khi ấn vào thư mục SANS SEC401.pdf thì mình thấy được một file có extension khả nghi
+
+=> Ans: SANS SEC401.pdf .cmd
+
 
 <h1>Q5</h1>
 <h2>Problem</h2>
